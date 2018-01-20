@@ -1,0 +1,4 @@
+Get Boss battle setup
+Rework Attacks
+Think about new upgrades (make weapons have damage upgrades)
+Add more of a dungeon aspect to it

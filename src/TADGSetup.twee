@@ -1,0 +1,76 @@
+:: StoryInit
+<<set $score to 0>>
+<<set $room to 1>>
+
+<!-- Player Variables -->
+<<set $health to 100>>
+<<set $healthMax to 150>>
+<<set $damage to 15>>
+<<set $minDamage to 5>>
+<<set $potions to 3>>
+<<set $potionHP to 25>>
+<<set $potionDrop to 7>> <!-- This is a percentage of 100 -->
+<<set $level to 0>>
+<<set $levelUPPercent to 0.75>>
+<<set $levelUP to 1000>> <!-- Starting XP Value -->
+<<set $maxXP to 100>>
+<<set $levelXP to 0>>
+<<set $totalXP to 0>>
+
+<!-- Monster Variables -->
+<<set $monsterList = [
+{name: "Skeleton", attack: 10, health: 25},
+{name: "Zombie", attack: 8, health: 20},
+{name: "Knight", attack: 12, health: 30},
+{name: "Spider", attack: 8, health: 40},
+{name: "Vampire", attack: 15, health: 15},
+{name: "Werewolf", attack: 7, health: 25},
+{name: "Witch", attack: 12, health: 35}
+]>>
+
+<<set $minAttack to 0>>
+<<set $damageValue to 0>>
+
+<!-- Boss Variables -->
+<<set setup.bossList = [ 
+{name: "Cobra", attack: 50,  health: 300},
+{name: "Dragon", attack: 80, health: 200},
+{name: "Assassin", attack: 30, health: 400},
+{name: "Warlock", attack: 40, health: 250}
+]>>
+
+<!-- Store -->
+<<set $coins to 0>>
+<<set $maxCoins to 20>>
+<<set $storeUnlock to 0>>
+
+<!-- Upgrades -->
+<<set $criticalUpgrade to false>>
+<<set $critPrice to 1500>>
+<<set $chanceToMissUpgrade to false>>
+<<set $missPrice to 2000>>
+
+
+::Widgets [widget]
+
+<<widget "store">><<nobr>>
+    <<silently>>
+        <<set _varName to $args[0]>>
+        <<set _isBought to State.getVar(_varName)>>
+        <<set _desc to $args[1]>>
+        <<set _price to $args[2]>>
+    <</silently>>
+    <<if not _isBought>>
+        <<if $coins >= _price>>
+            <<linkreplace "_desc (Price _price)">>
+                _desc (Bought)
+                <<set $coins -= _price>>
+                <<set State.setVar(_varName, true)>>
+            <</linkreplace>>
+        <<else>>
+            _desc (Price _price)
+        <</if>>
+    <<else>>
+        _desc (Bought)
+    <</if>>
+<</nobr>><</widget>>
