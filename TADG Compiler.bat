@@ -1,5 +1,5 @@
 echo off
-set path=%~dp0
+set dirTADG=%~dp0
 title TADG Compiler
-tweego -s Main -o %path%\output\TADG.html %path%\src
-start "" "%path%\output\TADG.html"
+tweego -s Main -o %dirTADG%output\TADG.html %dirTADG%src
+start "" "%dirTADG%output\TADG.html"
