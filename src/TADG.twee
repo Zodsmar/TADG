@@ -57,7 +57,7 @@ Health: <<= '<progress id="healthBar" value="' + $health + '" max="' + $healthMa
 :: IntroStory
 
 As you explore around your camp site you stubble upon what looks to be ancient ruins of a long lost
-civilization. BOOO
+civilization.
 <<linkappend "Do you explore it?">>
 As you stubble through the ruins you find what looks likes an old run down door. You slowly open it as 
 it makes many creaking noises. What do you do?
