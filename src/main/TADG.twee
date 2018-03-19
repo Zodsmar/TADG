@@ -47,11 +47,11 @@ $monsterName can do up to $damageValue damage!
 
 
 :: Game Header
-Health: <<= '<progress id="healthBar" value="' + $health + '" max="' + $healthMax + '"></progress>'>> $health || Potions: $potions || Coins: $coins || Level: $level || Potions: $potions || Coins: $coins || Level: $level
+Health: <<= '<progress id="healthBar" value="' + $health + '" max="' + $healthMax + '"></progress>'>> $health || Potions: $potions || Coins: $coins || Level: $level
 
 
 :: Menu Footer
-[[Main Menu|Main]] || <<include "Stats">>
+<<popup "Main Menu" "DoubleCheck">> || <<popup "Stats" "Stats">>
 
 
 :: IntroStory
@@ -113,7 +113,8 @@ it makes many creaking noises. What do you do?
 <<else>>
 <<if $monsterHP <= 0>>
 <<set $score += 1>>
-<<if $score % (5 * $room) is 0>>
+<<if $score % ($roomModifier * $room) is 0>>
+<<set $roomModifier += 2>>
 <<goto [[Room]]>>
 <<else>>
 <<goto [[Game Generation]]>>
@@ -218,23 +219,19 @@ Coins: $coins
 
 :: Stats
 <<nobr>>
-<span id="stats-box"></span>
-<<link "Stats">>
-<<replace "#stats-box">>
-<div class="stats">
-<div class="stats-content">
-<span class="close"><<link "×">>
-<<replace "#stats-box">><</replace>>
-<</link>></span>
 <p>XP: $levelXP || Total XP Ever: $totalXP || Max XP Per Kill: $maxXP</p>
 <p>Next Level XP Amount: $levelUP</p>
 <p>Max Health: $healthMax</p>
 <p>Potion Heal Amount: $potionHP</p>
 <p>Score: $score</p>
-</div>
-</div>
-<</replace>>
-<</link>>
 <</nobr>>
+
+:: DoubleCheck
+
+<p>Are you sure?</p>
+<p><<link "No">>
+<<replace "#stats-box">><</replace>>
+<</link>> | [[Yes |Main]]</p>
+
 
 

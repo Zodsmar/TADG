@@ -1,6 +1,12 @@
 :: StoryInit
+
 <<set $score to 0>>
+
+<!-- Room Variables -->
+
 <<set $room to 1>>
+<<set $roomModifier to 5>>
+<<set $bossRoom to 3>>
 
 <!-- Player Variables -->
 <<set $health to 100>>
@@ -49,28 +55,3 @@
 <<set $critPrice to 1500>>
 <<set $chanceToMissUpgrade to false>>
 <<set $missPrice to 2000>>
-
-
-::Widgets [widget]
-
-<<widget "store">><<nobr>>
-    <<silently>>
-        <<set _varName to $args[0]>>
-        <<set _isBought to State.getVar(_varName)>>
-        <<set _desc to $args[1]>>
-        <<set _price to $args[2]>>
-    <</silently>>
-    <<if not _isBought>>
-        <<if $coins >= _price>>
-            <<linkreplace "_desc (Price _price)">>
-                _desc (Bought)
-                <<set $coins -= _price>>
-                <<set State.setVar(_varName, true)>>
-            <</linkreplace>>
-        <<else>>
-            _desc (Price _price)
-        <</if>>
-    <<else>>
-        _desc (Bought)
-    <</if>>
-<</nobr>><</widget>>
