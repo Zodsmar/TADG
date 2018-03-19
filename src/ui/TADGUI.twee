@@ -1,0 +1,95 @@
+:: Main
+<h1>TADG</h1>
+
+<h3>[[Start|IntroStory]]</h3>
+<h3>[[How to Play]]</h3>
+<h3>[[About]]</h3>
+
+
+:: Game Header
+Health: <<= '<progress id="healthBar" value="' + $health + '" max="' + $healthMax + '"></progress>'>> $health || Potions: $potions || Coins: $coins || Level: $level
+
+
+:: Menu Footer
+<<popup "Main Menu" "DoubleCheck">> || <<popup "Stats" "Stats">>
+
+
+:: Game Menu [Menu]
+1. [[Attack]]
+2. [[Drink a Potion |Potion]]
+3. [["Run Away from "  + $monster.name |Game Generation]]
+<<if $level >= $storeUnlock>>\
+4. [[Go to Store |Store]]
+<</if>>
+
+
+:: MonsterSpawned [Monster]
+<<include "Game Header">>
+
+$monsterName has Appeared!
+This $monsterName has $monsterHP health!
+$monsterName can do up to $damageValue damage!
+
+<<include "Game Menu">>
+
+<<include "Menu Footer">>
+
+:: BossSpawned [Boss]
+<<include "Game Header">>
+
+$bossName has Appeared!
+This $bossName has $bossHP health!
+$bossName can do up to $bossDamageValue damage!
+
+<<include "Game Menu">>
+
+<<include "Menu Footer">>
+
+:: Monster [Monster]
+<<include "Game Header">>
+<!-- Gen New Monster -->
+\
+\
+You were hit for $attackAmount.
+\
+<<if $criticalUpgrade is true and $didCrit is true>>\
+The $monsterName was hit for $playerDamage and did a Critical Hit!
+<<set $didCrit to false>>\
+<<else>>\
+The $monsterName was hit for $playerDamage.
+<</if>>\
+\
+$monsterName now has $monsterHP health!
+\
+
+<<include "Game Menu">>
+
+<<include "Menu Footer">>
+
+:: Boss [Boss]
+<<include "Game Header">>
+<!-- Gen New Monster -->
+\
+\
+You were hit for $attackAmount.
+\
+<<if $criticalUpgrade is true and $didCrit is true>>\
+The $bossName was hit for $playerDamage and did a Critical Hit!
+<<set $didCrit to false>>\
+<<else>>\
+The $bossName was hit for $playerDamage.
+<</if>>\
+\
+$bossName now has $bossHP health!
+\
+
+<<include "Game Menu">>
+
+<<include "Menu Footer">>
+
+
+
+:: END
+You Killed $score monsters before you died!
+
+THANKS FOR PLAYING!

@@ -6,13 +6,6 @@ zoom:1
 :: StoryTitle
 TADG
 
-:: Main
-<h1>TADG</h1>
-
-<h3>[[Start|IntroStory]]</h3>
-<h3>[[How to Play]]</h3>
-<h3>[[About]]</h3>
-
 :: How to Play
 TADG is a text based game with many choices. Basically follow the game and read as you go along. Thats really it!
 
@@ -34,26 +27,6 @@ Eventually I plan on recreating it in Java but for now this is were I stand.
 <<include "Menu Footer">>
 
 
-:: MonsterSpawned [Monster]
-<<include "Game Header">>
-
-$monsterName has Appeared!
-This $monsterName has $monsterHP health!
-$monsterName can do up to $damageValue damage!
-
-<<include "Game Menu">>
-
-<<include "Menu Footer">>
-
-
-:: Game Header
-Health: <<= '<progress id="healthBar" value="' + $health + '" max="' + $healthMax + '"></progress>'>> $health || Potions: $potions || Coins: $coins || Level: $level
-
-
-:: Menu Footer
-<<popup "Main Menu" "DoubleCheck">> || <<popup "Stats" "Stats">>
-
-
 :: IntroStory
 
 As you explore around your camp site you stubble upon what looks to be ancient ruins of a long lost
@@ -65,156 +38,6 @@ it makes many creaking noises. What do you do?
 
 [[Enter Dungeon|Game Generation]]
 <</linkappend>>
-
-:: Game Generation [Generation Variables]
-<<set $monster to $monsterList.random()>>
-<<set $monsterName to $monster.name>>
-<<set $damageValue to $monster.attack>>
-<<set $monsterHP to $monster.health>>
-<<goto "MonsterSpawned">>
-
-
-:: Attack
-<<if $chanceToMissUpgrade is true and random(0, 50) > 40>>
-<<set $attackAmount to "nothing the enemy missed!">>
-<<else>>
-<<set $attackAmount to random($minAttack, $damageValue)>>
-<<set $health -= $attackAmount>>
-<</if>>
-
-
-<<set $playerDamage to random($minDamage, $damage)>>
-<<if $criticalUpgrade is true and random(0, 50) > 40>>
-<<set $playerDamage *= 2>>
-<<set $didCrit to true>>
-<</if>>
-
-<<set $monsterHP -= $playerDamage>>
-
-<!-- Player Died -->
-<<if $health <= 0>>
-<<goto [[END]]>>
-<<else>>
-
-<!-- Shop/Coins -->
-<<set $coins += random(0, $maxCoins)>>
-
-<!-- Random Potion -->
-<<if random(0, 100) <= $potionDrop>>
-<<set $potions += 1>>
-<</if>>
-
-<!-- Leveling UP -->
-<<set $xp to random(0, $maxXP)>>
-<<set $levelXP += $xp>>
-<<set $totalXP += $xp>>
-<<if $levelXP >= $levelUP>>
-<<goto "LevelUP">>
-<<else>>
-<<if $monsterHP <= 0>>
-<<set $score += 1>>
-<<if $score % ($roomModifier * $room) is 0>>
-<<set $roomModifier += 2>>
-<<goto [[Room]]>>
-<<else>>
-<<goto [[Game Generation]]>>
-<</if>>
-<<else>>
-[[Monster]]<<goto [[Monster]]>>
-<</if>>
-<</if>>
-<</if>>
-
-:: Room
-<<set $room += 1>>
-You have successfully killed $score monsters! You have entered room $room
-Monster have now gained +5 attack damage!
-<<for _i, _monster range $monsterList>>
-<<set _monster.attack+=5>>
-<</for>>
-
-[[Continue|Game Generation]]
-
-
-::BossRoom
-
-
-:: END
-You Killed $score monsters before you died!
-
-THANKS FOR PLAYING!
-
-
-:: Monster [Monster]
-<<include "Game Header">>
-<!-- Gen New Monster -->
-\
-\
-You were hit for $attackAmount.
-\
-<<if $criticalUpgrade is true and $didCrit is true>>\
-The $monsterName was hit for $playerDamage and did a Critical Hit!
-<<set $didCrit to false>>\
-<<else>>\
-The $monsterName was hit for $playerDamage.
-<</if>>\
-\
-$monsterName now has $monsterHP health!
-\
-
-<<include "Game Menu">>
-
-<<include "Menu Footer">>
-
-
-:: Game Menu [Menu]
-1. [[Attack]]
-2. [[Drink a Potion |Potion]]
-3. [["Run Away from "  + $monster.name|Game Generation]]
-<<if $level >= $storeUnlock>>\
-4. [[Go to Store |Store]]
-<</if>>
-
-
-:: Potion [Potion]
-<<if $potions > 0>>
-<<if $health + $potionHP <= $healthMax>>
-<<set $potions -= 1>>
-<<set $health += $potionHP>>
-<</if>>
-<</if>>
-<<goto `previous()`>>
-
-
-:: LevelUP
-<<include "Game Header">>
-<<nobr>>
-<<set $levelXP -= $levelUP>>
-<<set $level += 1>>
-<<set $levelUP += (Math.floor($levelUP * $levelUPPercent))>>
-<<set $health += ($healthMax - $health)>>
-<<set $healthMax += 50>>
-<<set $potionHP += 5>>
-<<set $maxXP += (Math.floor($maxXP * ($levelUPPercent / 25)))>>
-<</nobr>>
-Congratulations you Leveled UP to $level!
-Potions now heal $potionHP.
-You gained an extra <<print ($healthMax - $health)>> HP.
-
-<<link "Continue" `previous()`>><</link>>
-
-<<include "Menu Footer">>
-
-
-:: Store [Store]
-<h4>Store</h4>
-Coins: $coins
-
-1. <<store "$criticalUpgrade" "Chance to Critical Hit" $critPrice>>
-2. <<store "$chanceToMissUpgrade" "Chance to Miss" $missPrice>>
-
-[[Continue|Game Generation]]
-<<display "Menu Footer">>
 
 
 :: Stats

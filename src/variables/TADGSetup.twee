@@ -38,7 +38,7 @@
 <<set $damageValue to 0>>
 
 <!-- Boss Variables -->
-<<set setup.bossList = [ 
+<<set $bossList = [ 
 {name: "Cobra", attack: 50,  health: 300},
 {name: "Dragon", attack: 80, health: 200},
 {name: "Assassin", attack: 30, health: 400},

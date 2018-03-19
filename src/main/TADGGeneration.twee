@@ -1,0 +1,71 @@
+:: Game Generation [Generation Variables]
+<<set $monster to $monsterList.random()>>
+<<set $monsterName to $monster.name>>
+<<set $damageValue to $monster.attack>>
+<<set $monsterHP to $monster.health>>
+<<goto "MonsterSpawned">>
+
+:: Boss Generation
+<<set $boss to $bossList.random()>>
+<<set $bossName to $boss.name>>
+<<set $bossDamageValue to $boss.attack>>
+<<set $bossHP to $boss.health>>
+<<goto "BossSpawned">>
+
+:: Attack
+<<if $chanceToMissUpgrade is true and random(0, 50) > 40>>
+<<set $attackAmount to "nothing the enemy missed!">>
+<<else>>
+<<set $attackAmount to random($minAttack, $damageValue)>>
+<<set $health -= $attackAmount>>
+<</if>>
+
+
+<<set $playerDamage to random($minDamage, $damage)>>
+<<if $criticalUpgrade is true and random(0, 50) > 40>>
+<<set $playerDamage *= 2>>
+<<set $didCrit to true>>
+<</if>>
+
+<<set $monsterHP -= $playerDamage>>
+
+<!-- Player Died -->
+<<if $health <= 0>>
+	<<goto [[END]]>>
+	<<else>>
+
+	<!-- Shop/Coins -->
+	<<set $coins += random(0, $maxCoins)>>
+
+	<!-- Random Potion -->
+	<<if random(0, 100) <= $potionDrop>>
+	<<set $potions += 1>>
+	<</if>>
+
+	<!-- Leveling UP -->
+	<<set $xp to random(0, $maxXP)>>
+	<<set $levelXP += $xp>>
+	<<set $totalXP += $xp>>
+	<<if $levelXP >= $levelUP>>
+		<<goto "LevelUP">>
+		<<else>>
+		<<if $bossHP >= 0>>
+			<<if $monsterHP <= 0>>
+				<<set $score += 1>>
+				<<if $score % ($roomModifier * $room) is 0>>
+					<<if $bossRoom == $room>>
+					<<goto [[BossRoom]]>>
+					<</if>>
+					<<set $roomModifier += 2>>
+					<<goto [[Room]]>>
+					<<else>>
+					<<goto [[Game Generation]]>>
+				<</if>>
+				<<else>>
+				[[Monster]]<<goto [[Monster]]>>
+			<</if>>
+		<<else>>
+		<<goto [[Boss]]>>
+		<</if>>
+	<</if>>
+<</if>>

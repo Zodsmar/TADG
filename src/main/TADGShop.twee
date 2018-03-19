@@ -1,0 +1,20 @@
+
+:: Potion [Potion]
+<<if $potions > 0>>
+<<if $health + $potionHP <= $healthMax>>
+<<set $potions -= 1>>
+<<set $health += $potionHP>>
+<</if>>
+<</if>>
+<<goto `previous()`>>
+
+
+:: Store [Store]
+<h4>Store</h4>
+Coins: $coins
+
+1. <<store "$criticalUpgrade" "Chance to Critical Hit" $critPrice>>
+2. <<store "$chanceToMissUpgrade" "Chance to Miss" $missPrice>>
+
+[[Continue|Game Generation]]
+<<display "Menu Footer">>

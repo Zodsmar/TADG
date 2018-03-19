@@ -1,0 +1,36 @@
+:: Room
+<<set $room += 1>>
+You have successfully killed $score monsters! You have entered room $room
+Monster have now gained +5 attack damage!
+<<for _i, _monster range $monsterList>>
+<<set _monster.attack+=5>>
+<</for>>
+
+[[Continue|Game Generation]]
+
+
+::BossRoom
+<<if $bossRoom == $room>>
+<<set $bossRoom += 3>>
+
+<</if>>
+
+
+:: LevelUP
+<<include "Game Header">>
+<<nobr>>
+<<set $levelXP -= $levelUP>>
+<<set $level += 1>>
+<<set $levelUP += (Math.floor($levelUP * $levelUPPercent))>>
+<<set $health += ($healthMax - $health)>>
+<<set $healthMax += 50>>
+<<set $potionHP += 5>>
+<<set $maxXP += (Math.floor($maxXP * ($levelUPPercent / 25)))>>
+<</nobr>>
+Congratulations you Leveled UP to $level!
+Potions now heal $potionHP.
+You gained an extra <<print ($healthMax - $health)>> HP.
+
+<<link "Continue" `previous()`>><</link>>
+
+<<include "Menu Footer">>
