@@ -1,4 +1,5 @@
 echo off
+set dirTADG=%~dp0
 title TADG Compiler
-tweego -s Main -o D:\Users\Alexander\Documents\Tweego\TADG\output\TADG.html D:\Users\Alexander\Documents\Tweego\TADG\src
-start "" "D:\Users\Alexander\Documents\Tweego\TADG\output\TADG.html"
+tweego -s Main -o %dirTADG%output\TADG.html %dirTADG%src
+start "" "%dirTADG%output\TADG.html"
